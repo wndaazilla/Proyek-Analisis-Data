@@ -66,6 +66,8 @@ def create_category_and_city_sales_df(df):
     city_sales_df = city_sales_df.sort_values(by="total_sales", ascending=False).reset_index(drop=True)
     return category_sales_df, city_sales_df
 
+all_df = pd.read.csv("dashboard/all_data.csv")
+
 # Load cleaned data
 all_df = pd.read_csv("all_data.csv")
 
