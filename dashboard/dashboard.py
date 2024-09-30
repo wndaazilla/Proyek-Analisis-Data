@@ -67,7 +67,7 @@ def create_category_and_city_sales_df(df):
     return category_sales_df, city_sales_df
 
 # Load cleaned data
-all_df = pd.read.csv("dashboard/all_data.csv")
+all_df = pd.read_csv("dashboard/all_data.csv")
 
 # Mengonversi kolom tanggal menjadi tipe datetime
 datetime_columns = ["order_purchase_timestamp", "shipping_limit_date", "order_delivered_customer_date", "order_approved_at", "order_delivered_carrier_date", "order_estimated_delivery_date"]
