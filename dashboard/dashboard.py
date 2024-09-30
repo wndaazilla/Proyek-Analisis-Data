@@ -70,19 +70,15 @@ def create_category_and_city_sales_df(df):
 all_df = pd.read_csv("dashboard/all_data.csv")
 
 # Mengonversi kolom tanggal menjadi tipe datetime
-datetime_columns = [
-    "order_purchase_timestamp", 
-    "shipping_limit_date", 
-    "order_delivered_customer_date", 
-    "order_approved_at", 
-    "order_delivered_carrier_date", 
-    "order_estimated_delivery_date"
-]
+datetime_columns = ["order_purchase_timestamp", 
+                    "shipping_limit_date", 
+                    "order_delivered_customer_date", 
+                    "order_approved_at", 
+                    "order_delivered_carrier_date", 
+                    "order_estimated_delivery_date"]
 
-# Lakukan konversi untuk setiap kolom dalam daftar
 for column in datetime_columns:
-    if column in all_df.columns:
-        all_df[column] = pd.to_datetime(all_df[column], errors='coerce')
+    all_df[column] = pd.to_datetime(all_df[column])
 
 all_df.sort_values(by="order_purchase_timestamp", inplace=True)
 all_df.reset_index(drop=True, inplace=True)
