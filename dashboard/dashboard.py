@@ -78,8 +78,11 @@ datetime_columns = ["order_purchase_timestamp",
                     "order_estimated_delivery_date"]
 
 for column in datetime_columns:
-    all_df[column] = pd.to_datetime(all_df[column], errors='coerce')
-
+    if column in all_df.columns:  # Check if the column exists
+        all_df[column] = pd.to_datetime(all_df[column], errors='coerce')
+    else:
+        print(f"Column '{column}' does not exist in the DataFrame.")
+        
 all_df.sort_values(by="order_purchase_timestamp", inplace=True)
 
 all_df.reset_index(drop=True, inplace=True)
