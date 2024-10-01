@@ -70,11 +70,18 @@ def create_category_and_city_sales_df(df):
 all_df = pd.read_csv("dashboard/all_data.csv")
 
 # Mengonversi kolom tanggal menjadi tipe datetime
-datetime_columns = ["order_purchase_timestamp", "shipping_limit_date", "order_delivered_customer_date", "order_approved_at", "order_delivered_carrier_date", "order_estimated_delivery_date"]
+datetime_columns = ["order_purchase_timestamp", 
+                    "shipping_limit_date", 
+                    "order_delivered_customer_date", 
+                    "order_approved_at", 
+                    "order_delivered_carrier_date", 
+                    "order_estimated_delivery_date"]
+
 for column in datetime_columns:
-    all_df[column] = pd.to_datetime(all_df[column])
+    all_df[column] = pd.to_datetime(all_df[column], errors='coerce')
 
 all_df.sort_values(by="order_purchase_timestamp", inplace=True)
+
 all_df.reset_index(drop=True, inplace=True)
 
 min_date = all_df["order_purchase_timestamp"].min()
@@ -86,7 +93,8 @@ with st.sidebar:
     st.image("https://raw.githubusercontent.com/wndaazilla/img/2e0205f1ba72ed86509c1bafad3dc5485f717a32/ecommerce_public.png")
     
     start_date, end_date = st.date_input(
-        label='Rentang Waktu', min_value=min_date,
+        label='Rentang Waktu', 
+        min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
     )
@@ -94,7 +102,7 @@ with st.sidebar:
 main_df = all_df[(all_df["order_purchase_timestamp"] >= str(start_date)) & 
                   (all_df["order_purchase_timestamp"] <= str(end_date))]
 
-# st.dataframe(main_df)
+st.dataframe(main_df)
 
 # Menyiapkan berbagai dataframe
 daily_orders_df = create_daily_orders_df(main_df)
