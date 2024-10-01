@@ -69,22 +69,33 @@ def create_category_and_city_sales_df(df):
 # Load cleaned data
 all_df = pd.read_csv("dashboard/all_data.csv")
 
-# Mengonversi kolom tanggal menjadi tipe datetime
-datetime_columns = ["order_purchase_timestamp", 
-                    "shipping_limit_date", 
-                    "order_delivered_customer_date", 
-                    "order_approved_at", 
-                    "order_delivered_carrier_date", 
-                    "order_estimated_delivery_date"]
+datetime_columns = [
+    "order_purchase_timestamp", 
+    "shipping_limit_date", 
+    "order_delivered_customer_date", 
+    "order_approved_at", 
+    "order_delivered_carrier_date", 
+    "order_estimated_delivery_date"
+]
 
+# Convert columns to datetime
 for column in datetime_columns:
-    all_df[column] = pd.to_datetime(all_df[column])
+    if column in all_df.columns:
+        all_df[column] = pd.to_datetime(all_df[column], errors='coerce')  # Use 'coerce' to handle invalid dates
+    else:
+        print(f"Warning: Column '{column}' does not exist in all_df.")
 
+# Sort the DataFrame by order_purchase_timestamp
 all_df.sort_values(by="order_purchase_timestamp", inplace=True)
 all_df.reset_index(drop=True, inplace=True)
 
+# Get min and max dates
 min_date = all_df["order_purchase_timestamp"].min()
 max_date = all_df["order_purchase_timestamp"].max()
+
+# Display the results (you can use Streamlit's st.write or any other method you prefer)
+print(f"Minimum purchase date: {min_date}")
+print(f"Maximum purchase date: {max_date}")
 
 # Sidebar untuk memilih rentang waktu
 with st.sidebar:
